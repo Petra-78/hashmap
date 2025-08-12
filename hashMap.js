@@ -21,9 +21,9 @@ class HashMap {
     const index = this.hash(key);
     const bucket = this.buckets[index];
 
-    for (let pair of bucket) {
-      if (pair[0] === key) {
-        pair[1] = value;
+    for (let arr of bucket) {
+      if (arr[0] === key) {
+        arr[1] = value;
         return;
       }
     }
@@ -34,5 +34,17 @@ class HashMap {
     if (this.size / this.capacity > this.loadFactor) {
       this.resize();
     }
+  }
+
+  get(key) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+
+    for (let arr of bucket) {
+      if (arr[0] === key) {
+        return arr[1];
+      }
+    }
+    return null;
   }
 }
