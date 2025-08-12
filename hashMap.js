@@ -17,6 +17,20 @@ class HashMap {
     return hashCode;
   }
 
+  resize() {
+    capacity *= 2;
+    const newBuckets = new Array(capacity).fill(null).map(() => []);
+
+    for (const bucket of buckets) {
+      for (const [key, value] of bucket) {
+        const index = hash(key, capacity);
+        newBuckets[index].push([key, value]);
+      }
+    }
+
+    buckets = newBuckets;
+  }
+
   set(key, value) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
@@ -46,5 +60,31 @@ class HashMap {
       }
     }
     return null;
+  }
+
+  has(key) {
+    const index = this._hash(key);
+    const bucket = this.buckets[index];
+
+    for (let pair of bucket) {
+      if (pair[0] === key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  remove(key) {
+    const index = this._hash(key);
+    const bucket = this.buckets[index];
+
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i][0] === key) {
+        bucket.splice(i, 1);
+        this.size--;
+        return true;
+      }
+    }
+    return false;
   }
 }
