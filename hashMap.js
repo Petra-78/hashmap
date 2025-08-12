@@ -18,17 +18,17 @@ class HashMap {
   }
 
   resize() {
-    capacity *= 2;
-    const newBuckets = new Array(capacity).fill(null).map(() => []);
+    this.capacity *= 2;
+    const newBuckets = new Array(this.capacity).fill(null).map(() => []);
 
-    for (const bucket of buckets) {
+    for (const bucket of this.buckets) {
       for (const [key, value] of bucket) {
-        const index = hash(key, capacity);
+        const index = this.hash(key);
         newBuckets[index].push([key, value]);
       }
     }
 
-    buckets = newBuckets;
+    this.buckets = newBuckets;
   }
 
   set(key, value) {
@@ -56,6 +56,7 @@ class HashMap {
 
     for (let arr of bucket) {
       if (arr[0] === key) {
+        console.log(arr[1]);
         return arr[1];
       }
     }
@@ -63,7 +64,7 @@ class HashMap {
   }
 
   has(key) {
-    const index = this._hash(key);
+    const index = this.hash(key);
     const bucket = this.buckets[index];
 
     for (let pair of bucket) {
@@ -75,7 +76,7 @@ class HashMap {
   }
 
   remove(key) {
-    const index = this._hash(key);
+    const index = this.hash(key);
     const bucket = this.buckets[index];
 
     for (let i = 0; i < bucket.length; i++) {
@@ -89,6 +90,7 @@ class HashMap {
   }
 
   length() {
+    console.log(this.size);
     return this.size;
   }
 
@@ -96,4 +98,39 @@ class HashMap {
     this.buckets = new Array(this.capacity).fill(null).map(() => []);
     this.size = 0;
   }
+
+  keys() {
+    const allKeys = [];
+    for (let bucket of this.buckets) {
+      for (let [key] of bucket) {
+        allKeys.push(key);
+      }
+    }
+    console.log(allKeys);
+    return allKeys;
+  }
+
+  values() {
+    const allValues = [];
+    for (let bucket of this.buckets) {
+      for (let [, value] of bucket) {
+        allValues.push(value);
+      }
+    }
+    console.log(allValues);
+    return allValues;
+  }
+
+  entries() {
+    const allEntries = [];
+    for (let bucket of this.buckets) {
+      for (let pair of bucket) {
+        allEntries.push(pair);
+      }
+    }
+    console.log(allEntries);
+    return allEntries;
+  }
 }
+
+export { HashMap };
