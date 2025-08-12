@@ -16,4 +16,23 @@ class HashMap {
 
     return hashCode;
   }
+
+  set(key, value) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+
+    for (let pair of bucket) {
+      if (pair[0] === key) {
+        pair[1] = value;
+        return;
+      }
+    }
+
+    bucket.push([key, value]);
+    this.size++;
+
+    if (this.size / this.capacity > this.loadFactor) {
+      this.resize();
+    }
+  }
 }
